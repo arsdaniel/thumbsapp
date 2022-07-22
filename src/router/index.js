@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ProdukView from '../views/ProduksView.vue'
 import TheReview from '../views/TheReview.vue'
 import TheLocation from '../views/TheLocation.vue'
+import AddProduk from '../views/AddProduk.vue'
 
 const routes = [
   {
@@ -41,6 +42,14 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: TheLocation
+  },
+  {
+    path: '/tambahproduk',
+    name: 'AddProduk',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: AddProduk
   }
 ]
 

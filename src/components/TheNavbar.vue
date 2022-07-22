@@ -1,20 +1,5 @@
-<!--
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
--->
 <template>
+  <ShowCart :open="openCart" />
   <div class="bg-white">
     <!-- Mobile menu -->
     <TransitionRoot as="template" :show="open" >
@@ -88,7 +73,6 @@
                 
               </div>
 
-
               <!-- Search -->
               <div class="flex lg:ml-6">
                 <a href="#" class="p-2 text-gray-400 hover:text-red-500">
@@ -99,9 +83,9 @@
 
               <!-- Cart -->
               <div class="flow-root ml-4 lg:ml-6">
-                <a href="#" class="flex items-center p-2 -m-2 group">
-                  <ShoppingBagIcon class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" aria-hidden="true" />
-                  <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-red-800">0</span>
+                <a class="flex items-center p-2 -m-2 group">
+                  <ShoppingBagIcon class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" @click="getCart" aria-hidden="true" />
+                  <span class="ml-2 text-sm font-medium text-red-700 group-hover:text-red-800">1</span>
                   <span class="sr-only">items in cart, view bag</span>
                 </a>
               </div>
@@ -117,11 +101,13 @@
 import { ref } from 'vue'
 import {
   Dialog,
+  DialogPanel,
   PopoverGroup,
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon, UserIcon } from '@heroicons/vue/outline'
+import ShowCart from '@/components/ShowCart.vue'
 
 const navigation = {
   pages: [
@@ -133,6 +119,15 @@ const navigation = {
 }
 
 const open = ref(false)
+
+const openCart = ref(false)
+
+async function getCart() {
+  openCart.value = true
+
+}
+console.log(openCart.value);
+
 </script>
 
 <style scoped>

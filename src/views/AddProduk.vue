@@ -1,0 +1,70 @@
+<!--
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+<template>
+    <div class="px-4 mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-10">
+
+      <div class="mt-5 md:mt-0 md:col-span-2">
+        <form action="#" method="POST">
+          <div class="shadow sm:rounded-md">
+            <div class="px-4 py-5 bg-white sm:p-6">
+              <div class="grid grid-cols-6 gap-6">
+                <div class="col-span-6">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nama Produk</label>
+                  <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                </div>
+
+                <div class="col-span-6">
+                  <label for="last-name" class="block text-sm font-medium text-gray-700">Harga</label>
+                  <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                </div>
+                <div class="col-span-6">
+                  <label for="street-address" class="block text-sm font-medium text-gray-700">Street address</label>
+                  <input type="text" name="street-address" id="street-address" autocomplete="street-address" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                </div>
+               </div>
+            </div>
+            <div class="px-4 py-3 text-right bg-gray-50 sm:px-6">
+              <button type="submit" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</template>
+
+<script>
+import { doc, setDoc } from "firebase/firestore"
+import db from '@/firebase/firebase.js'
+
+export default {
+    created(){
+        this.createProduk()
+    },
+    methods: {
+        async createProduk() {
+            await setDoc(doc(db, 'produk', 'PR003'),{
+    id: 3,
+    name: 'Batagor Goreng Daun',
+    href: '#',
+    price: 'Rp. 15.000',
+    imageSrc: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MjJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
+            })
+        }
+    }
+}
+</script>
