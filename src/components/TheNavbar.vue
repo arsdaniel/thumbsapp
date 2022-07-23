@@ -1,5 +1,4 @@
 <template>
-  <ShowCart :open="openCart" />
   <div class="bg-white">
     <!-- Mobile menu -->
     <TransitionRoot as="template" :show="open" >
@@ -27,7 +26,7 @@
 
               <div class="px-4 py-6 space-y-6 border-t border-gray-200">
                 <div class="flow-root">
-                  <a href="#" class="block p-2 -m-2 font-medium text-gray-900">Joni</a>
+                  <a href="#"  class="block p-2 -m-2 font-medium text-gray-900">Joni</a>
                 </div>
                 <div class="flow-root">
                   <a href="#" class="block p-2 -m-2 font-medium text-gray-900">Create account</a>
@@ -60,6 +59,9 @@
             <PopoverGroup class="hidden lg:ml-8 lg:block lg:self-stretch">
               <div class="flex h-full space-x-8">
                 <router-link v-for="page in navigation.pages" :key="page.name"  :to="page.href" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">{{ page.name }}</router-link>
+                <router-link  to="/sign-in" v-if="!isLoggedIn" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">SignIn</router-link>
+                <router-link  to="/register" v-if="!isLoggedIn" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">Register</router-link>
+                <a href="" @click="handleSignOut" v-if="isLoggedIn" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">sign out</a>
               </div>
             </PopoverGroup>
 
@@ -68,7 +70,6 @@
                 <a href="#" class="flex items-center p-2 -m-2 group">
                   <UserIcon class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" aria-hidden="true" />
                   <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-red-800">Joni</span>
-                  <span class="sr-only">items in cart, view bag</span>
                 </a>
                 
               </div>
@@ -84,7 +85,7 @@
               <!-- Cart -->
               <div class="flow-root ml-4 lg:ml-6">
                 <a class="flex items-center p-2 -m-2 group">
-                  <ShoppingBagIcon class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" @click="getCart" aria-hidden="true" />
+                  <ShoppingBagIcon class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" @click="isOpen = true" aria-hidden="true" />
                   <span class="ml-2 text-sm font-medium text-red-700 group-hover:text-red-800">1</span>
                   <span class="sr-only">items in cart, view bag</span>
                 </a>
@@ -94,20 +95,97 @@
         </div>
       </nav>
     </header>
+
+     <TransitionRoot as="template" :show="isOpen">
+    <Dialog as="div" class="relative z-10" @close="closeCart">
+      <TransitionChild as="template" enter="ease-in-out duration-500" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in-out duration-500" leave-from="opacity-100" leave-to="opacity-0">
+        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden">
+          <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 pointer-events-none">
+            <TransitionChild as="template" enter="transform transition ease-in-out duration-500 sm:duration-700" enter-from="translate-x-full" enter-to="translate-x-0" leave="transform transition ease-in-out duration-500 sm:duration-700" leave-from="translate-x-0" leave-to="translate-x-full">
+              <DialogPanel class="w-screen max-w-md pointer-events-auto">
+                <div class="flex flex-col h-full overflow-y-scroll bg-white shadow-xl">
+                  <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
+                    <div class="flex items-start justify-between">
+                      <DialogTitle class="text-lg font-medium text-gray-900"> Shopping cart </DialogTitle>
+                      <div class="flex items-center ml-3 h-7">
+                        <button type="button" class="p-2 -m-2 text-gray-400 hover:text-gray-500"  @click="closeCart">
+                          <span class="sr-only">Close panel</span>
+                          <XIcon class="w-6 h-6" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <ShowCart />
+                  </div>
+
+                  <div class="px-4 py-6 border-t border-gray-200 sm:px-6">
+                    <div class="flex justify-between text-base font-medium text-gray-900">
+                      <p>Subtotal</p>
+                      <p>$262.00</p>
+                    </div>
+                    <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                    <div class="mt-6">
+                      <a href="#" class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Checkout</a>
+                    </div>
+                    <div class="flex justify-center mt-6 text-sm text-center text-gray-500">
+                      <p>
+                        or <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="closeModal">Continue Shopping<span aria-hidden="true"> &rarr;</span></button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import {
   Dialog,
   DialogPanel,
   PopoverGroup,
   TransitionChild,
   TransitionRoot,
+  DialogTitle,
 } from '@headlessui/vue'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon, UserIcon } from '@heroicons/vue/outline'
+import { useRouter } from "vue-router"
 import ShowCart from '@/components/ShowCart.vue'
+import { getAuth, onAuthStateChanged, signOut } from '@firebase/auth'
+
+const isLoggedIn = ref(false)
+
+let auth;
+onMounted (() => {
+  auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLoggedIn.value =true
+    }else {
+      isLoggedIn.value =false
+    }
+  } )
+})
+
+const handleSignOut = () => {
+  signOut(auth).then(( )=> {
+    router.push('/sign-in');
+  })
+}
+
+function closeCart() {
+  isOpen.value = false
+}
 
 const navigation = {
   pages: [
@@ -120,13 +198,8 @@ const navigation = {
 
 const open = ref(false)
 
-const openCart = ref(false)
+const isOpen = ref(false)
 
-async function getCart() {
-  openCart.value = true
-
-}
-console.log(openCart.value);
 
 </script>
 

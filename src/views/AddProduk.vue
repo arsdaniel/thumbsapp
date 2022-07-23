@@ -46,17 +46,13 @@
     </div>
 </template>
 
-<script>
-import { doc, setDoc } from "firebase/firestore"
-import db from '@/firebase/firebase.js'
+<script setup>
+import { getFirestore, doc, setDoc } from "firebase/firestore"
 
-export default {
-    created(){
-        this.createProduk()
-    },
-    methods: {
-        async createProduk() {
-            await setDoc(doc(db, 'produk', 'PR003'),{
+const db = getFirestore()
+
+async function createProduk() {
+            await setDoc(doc(db, 'produk', 'PR004'),{
     id: 3,
     name: 'Batagor Goreng Daun',
     href: '#',
@@ -65,6 +61,5 @@ export default {
     imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
             })
         }
-    }
-}
+    
 </script>

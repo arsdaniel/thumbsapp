@@ -1,29 +1,6 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <template>
-  <TransitionRoot as="template" :show="open">
-    <Dialog as="div" class="relative z-10" @close="open = false">
-      <TransitionChild as="template" enter="ease-in-out duration-500" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in-out duration-500" leave-from="opacity-100" leave-to="opacity-0">
-        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
-      </TransitionChild>
-
-      <div class="fixed inset-0 overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden">
-          <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 pointer-events-none">
-            <TransitionChild as="template" enter="transform transition ease-in-out duration-500 sm:duration-700" enter-from="translate-x-full" enter-to="translate-x-0" leave="transform transition ease-in-out duration-500 sm:duration-700" leave-from="translate-x-0" leave-to="translate-x-full">
-              <DialogPanel class="w-screen max-w-md pointer-events-auto">
-                <div class="flex flex-col h-full overflow-y-scroll bg-white shadow-xl">
-                  <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
-                    <div class="flex items-start justify-between">
-                      <DialogTitle class="text-lg font-medium text-gray-900"> Shopping cart </DialogTitle>
-                      <div class="flex items-center ml-3 h-7">
-                        <button type="button" class="p-2 -m-2 text-gray-400 hover:text-gray-500" @click="open = false">
-                          <span class="sr-only">Close panel</span>
-                          <XIcon class="w-6 h-6" aria-hidden="true" />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="mt-8">
+    <div class="mt-8">
                       <div class="flow-root">
                         <ul role="list" class="-my-6 divide-y divide-gray-200">
                           <li v-for="product in products" :key="product.id" class="flex py-6">
@@ -52,43 +29,10 @@
                           </li>
                         </ul>
                       </div>
-                    </div>
-                  </div>
-
-                  <div class="px-4 py-6 border-t border-gray-200 sm:px-6">
-                    <div class="flex justify-between text-base font-medium text-gray-900">
-                      <p>Subtotal</p>
-                      <p>$262.00</p>
-                    </div>
-                    <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                    <div class="mt-6">
-                      <a href="#" class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Checkout</a>
-                    </div>
-                    <div class="flex justify-center mt-6 text-sm text-center text-gray-500">
-                      <p>
-                        or <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="open = false">Continue Shopping<span aria-hidden="true"> &rarr;</span></button>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </DialogPanel>
-            </TransitionChild>
-          </div>
-        </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
+    </div>           
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { XIcon } from '@heroicons/vue/outline'
-import { defineProps } from 'vue'
-
-const props = defineProps({
-    open: Boolean,
-})
 
 const products = [
   {
@@ -114,8 +58,5 @@ const products = [
   },
   // More products...
 ]
-
-
-const open = ref(props.open)
 
 </script>

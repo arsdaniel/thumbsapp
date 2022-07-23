@@ -18,29 +18,19 @@
   </div>
 </template>
 
-<script>
-import { query, collection, getDocs } from 'firebase/firestore'
-import db from '@/firebase/firebase.js'
+<script setup>
+import { ref } from 'vue'
+import { getFirestore, collection, getDocs } from 'firebase/firestore'
 
-export default {
-  data(){
-    return {
-      products: []
-    }
-  },
+const db = getFirestore()
+const products = ref('')
 
-  created() {
-    this.getProduk()
-  },
-
-  methods: {
-    async getProduk() {
-      const querySnap = await getDocs(query(collection(db, 'produk')));
+async function getProduk() {
+      const querySnap = await getDocs(collection(db, 'produk'));
 
       querySnap.forEach((doc) => {
-        this.products.push(doc.data())
+        console.log(`${doc.id} => ${doc.data()}`);
       })
     }
-  }
-}
+  
 </script>
