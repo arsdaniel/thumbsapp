@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white">
+  <div>
     <!-- Mobile menu -->
     <TransitionRoot as="template" :show="open" >
       <Dialog as="div" class="relative z-40 lg:hidden" @close="open = false">
@@ -9,7 +9,7 @@
 
         <div class="fixed inset-0 z-40 flex">
           <TransitionChild as="template" enter="transition ease-in-out duration-300 transform" enter-from="-translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0" leave-to="-translate-x-full">
-            <DialogPanel class="relative flex flex-col w-full max-w-xs pb-12 overflow-y-auto bg-white shadow-xl">
+            <DialogPanel class="relative flex flex-col w-full max-w-xs pb-12 overflow-y-auto shadow-xl bg-cyan-300">
               <div class="flex px-4 pt-5 pb-2">
                 <button type="button" class="inline-flex items-center justify-center p-2 -m-2 text-gray-400 rounded-md" @click="open = false">
                   <span class="sr-only">Close menu</span>
@@ -17,14 +17,14 @@
                 </button>
               </div>
 
-              <div class="px-4 py-6 space-y-6 border-t border-gray-200">
+              <div class="px-4 py-6 space-y-6 ">
                 <div v-for="page in navigation.pages" :key="page.name" class="flow-root">
                 <router-link :to="page.href" @click="open = false" class="block p-2 -m-2 font-medium text-gray-900">{{ page.name }}</router-link>
 
                 </div>
               </div>
 
-              <div class="px-4 py-6 space-y-6 border-t border-gray-200">
+              <div class="px-4 py-6 space-y-6 border-t border-gray-400">
                 <div class="flow-root">
                   <a href="#"  class="block p-2 -m-2 font-medium text-gray-900">Joni</a>
                 </div>
@@ -38,11 +38,11 @@
       </Dialog>
     </TransitionRoot>
 
-    <header class="relative bg-white">
+    <header class="relative bg-cyan-300">
       <nav aria-label="Top" class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="border-b border-gray-200">
+        <div>
           <div class="flex items-center h-16">
-            <button type="button" class="p-2 text-gray-400 bg-white rounded-md lg:hidden" @click="open = true">
+            <button type="button" class="p-2 text-gray-700 rounded-md bg-cyan-300 lg:hidden" @click="open = true">
               <span class="sr-only">Open menu</span>
               <MenuIcon class="w-6 h-6" aria-hidden="true" />
             </button>
@@ -76,7 +76,7 @@
 
               <!-- Search -->
               <div class="flex lg:ml-6">
-                <a href="#" class="p-2 text-gray-400 hover:text-red-500">
+                <a href="#" class="p-2 text-gray-700 hover:text-red-500">
                   <span class="sr-only">Search</span>
                   <SearchIcon class="w-6 h-6" aria-hidden="true" />
                 </a>
@@ -85,7 +85,7 @@
               <!-- Cart -->
               <div class="flow-root ml-4 lg:ml-6">
                 <a class="flex items-center p-2 -m-2 group">
-                  <ShoppingBagIcon class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" @click="isOpen = true" aria-hidden="true" />
+                  <ShoppingBagIcon class="flex-shrink-0 w-6 h-6 text-gray-700 group-hover:text-red-500" @click="isOpen = true" aria-hidden="true" />
                   <span class="ml-2 text-sm font-medium text-red-700 group-hover:text-red-800">1</span>
                   <span class="sr-only">items in cart, view bag</span>
                 </a>
@@ -107,10 +107,10 @@
           <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 pointer-events-none">
             <TransitionChild as="template" enter="transform transition ease-in-out duration-500 sm:duration-700" enter-from="translate-x-full" enter-to="translate-x-0" leave="transform transition ease-in-out duration-500 sm:duration-700" leave-from="translate-x-0" leave-to="translate-x-full">
               <DialogPanel class="w-screen max-w-md pointer-events-auto">
-                <div class="flex flex-col h-full overflow-y-scroll bg-white shadow-xl">
+                <div class="flex flex-col h-full overflow-y-scroll shadow-xl bg-cyan-300">
                   <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
                     <div class="flex items-start justify-between">
-                      <DialogTitle class="text-lg font-medium text-gray-900"> Shopping cart </DialogTitle>
+                      <DialogTitle class="text-lg font-medium text-gray-900"> Pesanan Anda </DialogTitle>
                       <div class="flex items-center ml-3 h-7">
                         <button type="button" class="p-2 -m-2 text-gray-400 hover:text-gray-500"  @click="closeCart">
                           <span class="sr-only">Close panel</span>
@@ -122,18 +122,18 @@
                     <ShowCart />
                   </div>
 
-                  <div class="px-4 py-6 border-t border-gray-200 sm:px-6">
+                  <div class="px-4 py-6 border-t border-gray-700 sm:px-6">
                     <div class="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>Rp 120.262</p>
                     </div>
-                    <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                    <p class="mt-0.5 text-sm text-gray-500">Harga Sudah Termasuk Pajak</p>
                     <div class="mt-6">
                       <a href="#" class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Checkout</a>
                     </div>
                     <div class="flex justify-center mt-6 text-sm text-center text-gray-500">
                       <p>
-                        or <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="closeModal">Continue Shopping<span aria-hidden="true"> &rarr;</span></button>
+                        atau <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="closeCart">Lanjut Belanja<span aria-hidden="true"> &rarr;</span></button>
                       </p>
                     </div>
                   </div>

@@ -1,4 +1,4 @@
-<template>
+<template >
     <TheNavbar />
 <div>
     <router-view/>

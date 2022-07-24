@@ -12,17 +12,17 @@
                               <div>
                                 <div class="flex justify-between text-base font-medium text-gray-900">
                                   <h3>
-                                    <a :href="product.href"> {{ product.name }} </a>
+                                    <p> {{ product.name }} </p>
                                   </h3>
                                   <p class="ml-4">{{ product.price }}</p>
                                 </div>
                                 <p class="mt-1 text-sm text-gray-500">{{ product.color }}</p>
                               </div>
                               <div class="flex items-end justify-between flex-1 text-sm">
-                                <p class="text-gray-500">Qty {{ product.quantity }}</p>
+                                <p class="text-gray-500">Jumlah dipesan {{ product.quantity }}</p>
 
                                 <div class="flex">
-                                  <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+                                  <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Hapus</button>
                                 </div>
                               </div>
                             </div>
@@ -33,30 +33,29 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
+import { getFirestore, query, collection, getDocs } from 'firebase/firestore'
 
-const products = [
-  {
-    id: 1,
-    name: 'Throwback Hip Bag',
-    href: '#',
-    color: 'Salmon',
-    price: '$90.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-    imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-  },
-  {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  // More products...
-]
+const db = getFirestore()
+const products = ref([])
 
+onMounted(async () => {
+  const querySnap = await getDocs(query(collection(db, 'produk')));
+  let fbProducts = []
+      querySnap.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data() );
+        const product = {
+          id: doc.id,
+          href: doc.data().href,
+          imageAlt: doc.data().imageAlt,
+          imageSrc: doc.data().imageSrc,
+          name: doc.data().name,
+          price: doc.data().price,
+        }
+        fbProducts.push(product)
+      })
+      products.value = fbProducts
+    })
+      
+  
 </script>
