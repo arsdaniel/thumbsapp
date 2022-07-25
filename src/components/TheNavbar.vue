@@ -26,7 +26,7 @@
 
               <div class="px-4 py-6 space-y-6 border-t border-gray-400">
                 <div class="flow-root">
-                  <a href="#"  class="block p-2 -m-2 font-medium text-gray-900">Joni</a>
+                  <a href="#"  class="block p-2 -m-2 font-medium text-gray-900">{{ displayName }}</a>
                 </div>
                 <div class="flow-root">
                   <a href="#" class="block p-2 -m-2 font-medium text-gray-900">Create account</a>
@@ -50,7 +50,7 @@
             <!-- Logo -->
             <div class="flex ml-4 lg:ml-0">
               <a href="#">
-                <span class="sr-only">Workflow</span>
+                <span class="sr-only">THUMBSUP FOOD</span>
                 <img class="w-auto h-8" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
               </a>
             </div>
@@ -59,17 +59,14 @@
             <PopoverGroup class="hidden lg:ml-8 lg:block lg:self-stretch">
               <div class="flex h-full space-x-8">
                 <router-link v-for="page in navigation.pages" :key="page.name"  :to="page.href" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">{{ page.name }}</router-link>
-                <router-link  to="/sign-in" v-if="!isLoggedIn" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">SignIn</router-link>
-                <router-link  to="/register" v-if="!isLoggedIn" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">Register</router-link>
-                <a href="" @click="handleSignOut" v-if="isLoggedIn" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-800">sign out</a>
               </div>
             </PopoverGroup>
 
             <div class="flex items-center ml-auto">
               <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                 <a href="#" class="flex items-center p-2 -m-2 group">
-                  <UserIcon class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" aria-hidden="true" />
-                  <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-red-800">Joni</span>
+                  <UserIcon v-if="!isLoggedIn" class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-red-500" aria-hidden="true" />
+                  <img :src="photoURL" v-if="isLoggedIn" class="flex-shrink-0 w-6 h-6 text-gray-400 rounded group-hover:text-red-500" aria-hidden="true" />
                 </a>
                 
               </div>
@@ -164,17 +161,34 @@ import ShowCart from '@/components/ShowCart.vue'
 import { getAuth, onAuthStateChanged, signOut } from '@firebase/auth'
 
 const isLoggedIn = ref(false)
+const displayName = ref()
+const email = ref()
+const photoURL = ref()
+const emailVerified = ref()
 
 let auth;
 onMounted (() => {
   auth = getAuth();
+  const user = auth.currentUser;
+  
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      isLoggedIn.value =true
+  // The user object has basic properties such as display name, email, etc.
+      displayName.value = user.displayName;
+      email.value = user.email;
+      photoURL.value = user.photoURL;
+      emailVerified.value = user.emailVerified;
+      console.log(displayName.value);
+      // The user's ID, unique to the Firebase project. Do NOT use
+      // this value to authenticate with your backend server, if
+      // you have one. Use User.getToken() instead.
+      const uid = user.uid;
+      isLoggedIn.value = true 
     }else {
       isLoggedIn.value =false
     }
-  } )
+  })
 })
 
 const handleSignOut = () => {
@@ -189,10 +203,7 @@ function closeCart() {
 
 const navigation = {
   pages: [
-    { name: 'Home', href: '/' },
-    { name: 'Produk', href: '/Produk' },
-    { name: 'Review', href: '/review' },
-    { name: 'Location', href: '/location' },
+    { name: 'THUMBSUP FOOD', href: '/' },
   ],
 }
 
@@ -203,8 +214,3 @@ const isOpen = ref(false)
 
 </script>
 
-<style scoped>
-a.router-link-active{
-  color : red;
-}
-</style>
